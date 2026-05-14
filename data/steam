@@ -8,7 +8,7 @@ steamcontent.com
 steamdeck.com
 steamgames.com
 steampowered.com
-steamserver.net
+steamserver.net @cn
 steamstatic.com
 steamusercontent.com
 underlords.com
@@ -42,7 +42,7 @@ steam.cdn.webra.ru
 
 # Akamai
 full:steambroadcast.akamaized.net
-full:steamcdn-a.akamaihd.net
+full:steamcdn-a.akamaihd.net @cn
 full:steamcommunity-a.akamaihd.net
 full:steammobile.akamaized.net
 full:steampipe-kr.akamaized.net
