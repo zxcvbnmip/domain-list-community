@@ -21,6 +21,15 @@ include:category-network-security-cn
 # Social Media
 include:category-social-media-cn
 
+# nvidia
+include:nvidia @cn
+
+# 网盘
+include:category-netdisk-cn
+
+# porn
+include:category-porn @cn
+
 # Advertisment & Analytics
 include:getui
 include:growingio
