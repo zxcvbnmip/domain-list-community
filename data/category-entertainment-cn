@@ -24,8 +24,6 @@ include:iqiyi @-!cn
 include:ku6
 include:kuaikan
 include:kuaishou
-include:kugou
-include:kuwo
 include:le
 include:lizhi
 include:pptv
@@ -36,12 +34,13 @@ include:sakurafrp
 # steam
 include:steam @cn
 
+include:shuqi
 include:taomee
+include:tencent-tme
 include:u17
 include:xiaoheihe
 include:xiaoyuzhou
-include:ximalaya
-include:youku
+include:youku @-!cn
 include:yuewen @-!cn
 include:yy
 
@@ -90,6 +89,11 @@ bsbsb.top
 ccw.site
 # CdkeyNoGap
 cdkeynogap.com
+# 酷音铃声
+diyring.cc
+kuyin123.com
+kuyinxiu.com
+kuyinyun.com
 # 动漫之家 #703
 dmzj.com
 muwai.com
@@ -127,6 +131,7 @@ m1905.cn
 m1905.com
 # 喵御宅
 mfuns.cn
+mfuns.net
 # 秒拍
 miaopai.com
 # 磨铁文学
@@ -147,6 +152,8 @@ shuhai.com
 tadu.com
 # 江山文学
 vsread.com
+# 树梦
+xinlishumeng.com
 # 祥云游社
 xyys.com
 # 百合会
