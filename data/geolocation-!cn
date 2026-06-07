@@ -1,5 +1,9 @@
 # This list contains domains that don't have access point in China mainland. This is opposite to geolocation-cn.
 
+#porn
+include:category-porn @-!cn
+
+
 # AI Chat
 include:category-ai-!cn
 
