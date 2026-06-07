@@ -27,9 +27,6 @@ include:nvidia @cn
 # 网盘
 include:category-netdisk-cn
 
-# porn
-include:category-porn @cn
-
 # Advertisment & Analytics
 include:getui
 include:growingio
