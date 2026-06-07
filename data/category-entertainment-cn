@@ -1,17 +1,20 @@
 # Entertainment & Videos & Games & Music & Podcasts
 
-## 游戏
+# 游戏
 include:category-games-cn
+## steam
+include:steam @cn
+## 游戏平台
+include:category-game-platforms-download @cn
+include:category-game-accelerator-cn
+
+# PORN
+include:category-porn @cn
 
 include:aamgame
 include:acfun
 include:acplay
 include:bilibili @-!cn
-
-# 游戏平台
-include:category-game-platforms-download @cn
-include:category-game-accelerator-cn
-
 include:ciweimao
 include:dedao
 include:douyin
@@ -31,10 +34,6 @@ include:pptv
 include:qimao
 include:qingtingfm
 include:sakurafrp
-
-# steam
-include:steam @cn
-
 include:shuqi
 include:taomee
 include:tencent-tme
