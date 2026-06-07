@@ -1,0 +1,19 @@
+# nvidia
+include:nvidia @cn
+
+# 网盘
+include:category-netdisk-cn
+
+# porn
+include:category-porn @cn
+
+# 游戏平台
+include:category-game-platforms-download @cn
+include:category-game-accelerator-cn
+
+# steam
+include:steam @cn
+include:category-games-cn
+
+## 123 云盘 CDN
+cjjd19.com
