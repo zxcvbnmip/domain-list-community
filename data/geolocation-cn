@@ -24,6 +24,12 @@ include:category-social-media-cn
 # nvidia
 include:nvidia @cn
 
+# microsoft
+include: microsoft @cn
+
+# apple
+include: apple @cn
+
 # 网盘
 include:category-netdisk-cn
 
