@@ -34,11 +34,8 @@ include:pptv
 include:qimao
 include:qingtingfm
 include:sakurafrp
-<<<<<<< HEAD
 include:shuqi
 include:taihe
-=======
->>>>>>> f6a6c644 (	modified:   data/category-entertainment-cn)
 include:taomee
 include:tencent-tme
 include:u17
