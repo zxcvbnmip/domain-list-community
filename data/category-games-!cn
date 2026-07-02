@@ -5,7 +5,7 @@ include:curseforge
 include:cygames
 include:ea
 include:embark
-include:epicgames
+# include:epicgames
 include:escapefromtarkov
 include:faceit
 include:gaijin
