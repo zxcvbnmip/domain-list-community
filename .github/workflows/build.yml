@@ -1,4 +1,4 @@
-name: Build dlc.dat
+name: Build geosite.dat
 on:
   push:
     branches:
@@ -12,63 +12,107 @@ concurrency:
 
 jobs:
   build:
-    name: Build
+    name: Build, Clean and Pack Assets
     runs-on: ubuntu-latest
+    
+    # 显式声明权限，确保 Git Push 和 Release 拥有写权限
+    permissions:
+      contents: write
 
     steps:
-      - name: Checkout codebase
-        uses: actions/checkout@v7
+      # 1. 直接拉取主仓库到根目录，保持纯正的 Git 上下文
+      - name: Checkout Codebase
+        uses: actions/checkout@v4
+
+      # 2. 拉取外部转换工具到独立目录
+      - name: Checkout MetaCubeX Converter
+        uses: actions/checkout@v4
         with:
-          ref: ${{ github.sha }}
-          path: code
+          repository: MetaCubeX/meta-rules-converter
+          path: convert
 
       - name: Setup Go
         uses: actions/setup-go@v7
         with:
-          go-version-file: code/go.mod
-          cache-dependency-path: code/go.sum
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
 
-      - name: Set variables
+      # 4. 初始化构建目录与环境变量
+      - name: Initialize Dist & Environment Variables
+        shell: bash
         run: |
+          mkdir -p dist/geosite
           echo "RELEASE_NAME=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
           echo "TAG_NAME=$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
-        shell: bash
 
-      - name: Build dlc.dat and plain lists
+      # 5. 编译 geosite.dat 和明文列表
+      - name: Build geosite.dat and Plain Lists
         run: |
-          cd code || exit 1
-          go run ./ --outputdir=../ --exportlists=category-ads-all,tld-cn,cn,tld-\!cn,geolocation-\!cn,apple,icloud
-          go run ./cmd/datdump/main.go --inputdata=../dlc.dat --outputdir=../ --exportlists=_all_
-          cd ../ && rm -rf code
+          go run ./ --outputdir=./dist/ --outputname=geosite.dat --exportlists=category-ads-all,tld-cn,cn,tld-\!cn,geolocation-\!cn,apple,icloud
+          go run ./cmd/datdump/main.go --inputdata=./dist/geosite.dat --outputdir=./dist/ --exportlists=_all_
 
-      - name: Generate dlc.dat sha256 hash
+      # 6. 转换为 Meta Rule Set (.mrs)
+      - name: Convert Geo DAT to Meta Rule Set (.mrs)
         run: |
-          sha256sum dlc.dat > dlc.dat.sha256sum
-          sha256sum dlc.dat_plain.yml > dlc.dat_plain.yml.sha256sum
+          mkdir -p dist/geosite_mrs
+          cd convert || exit 1
+          go run ./ geosite -f ../dist/geosite.dat -o ../dist/geosite_mrs
 
-      - name: Generate Zip
+      # 7. 压缩和打包所有产物
+      - name: Compress and Pack Assets
         run: |
-          zip -9 dlc.dat.zip dlc.dat
-          sha256sum dlc.dat.zip > dlc.dat.zip.sha256sum
+          sudo apt-get update && sudo apt-get install -y p7zip-full
+          
+          cd dist || exit 1
+          cd geosite_mrs && 7z a ../BundleMRS.7z -mx=1 -r *.mrs && cd ..
+          
+          zip -9 geosite.dat.zip geosite.dat
+          xz -z -9 -k geosite.dat
+          
+          sha256sum geosite.dat > geosite.dat.sha256sum
+          sha256sum geosite.dat_plain.yml > geosite.dat_plain.yml.sha256sum
+          sha256sum geosite.dat.zip > geosite.dat.zip.sha256sum
+          sha256sum geosite.dat.xz > geosite.dat.xz.sha256sum
 
-      - name: Generate XZ
+      # 8. 使用标准 Git 流程推送产物到独立的 release 分支
+      - name: Git Push Assets to "release" Branch
         run: |
-          xz -z -9 -k dlc.dat
-          sha256sum dlc.dat.xz > dlc.dat.xz.sha256sum
-
-      - name: Git push assets to "release" branch
-        run: |
-          git init
           git config --local user.name "github-actions[bot]"
           git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -b release
-          git add *.txt *.sha256sum dlc.dat dlc.dat_plain.yml dlc.dat.zip dlc.dat.xz
+          
+          # 切换到孤儿分支（适合只存放构建产物的分支）
+          git checkout --orphan release
+          
+          # 清除暂存区，只保留 dist 目录下的产物
+          git rm -rf . --cached > /dev/null 2>&1 || true
+          
+          # 将 dist 中的文件移动或直接提交（此处采用直接 add dist 的标准做法）
+          git add dist/*
           git commit -m "${{ env.RELEASE_NAME }}"
-          git remote add origin "https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}"
-          git push -f -u origin release
+          
+          # 强制推送到远程 release 分支
+          git push -f origin HEAD:release
 
-      - name: Release and upload assets
-        run: |
-          gh release create ${{ env.TAG_NAME }} --target ${{ github.sha }} --generate-notes --latest --title ${{ env.RELEASE_NAME }} ./dlc.dat ./dlc.dat.* ./dlc.dat_plain.yml ./dlc.dat_plain.yml.*
+      # 9. 优雅清理历史 Release：保留最新 1 个（下一步创建后，总量刚好为 2 个）
+      - name: Prune Old GitHub Releases (Keep Only Last 2)
+        uses: dev-drprasad/delete-older-releases@v0.3.4
+        with:
+          keep_latest: 1
+          delete_tags: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 10. 正式创建 GitHub Release 并上传资产
+      - name: Create GitHub Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # 回到工作区根目录，确保 gh 识别到 .git 仓库
+          cd ${{ github.workspace }}
+          
+          gh release create ${{ env.TAG_NAME }} \
+            --generate-notes \
+            --latest \
+            --title "${{ env.RELEASE_NAME }}" \
+            ./dist/geosite.dat* \
+            ./dist/BundleMRS.7z
