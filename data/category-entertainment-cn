@@ -2,12 +2,9 @@
 
 # 游戏
 include:category-games-cn
-## steam
-include:steam @cn
 ## 游戏平台
 include:category-game-platforms-download @cn
 include:category-game-accelerator-cn
-include:epicgames
 
 # PORN
 include:category-porn @cn
