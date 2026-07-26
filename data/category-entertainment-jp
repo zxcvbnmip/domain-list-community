@@ -1,5 +1,2 @@
 include:dmm
-include:dlsite
-
-# 定制
-include:spotify
+include:dlsite 
