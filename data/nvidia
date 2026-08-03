@@ -61,6 +61,7 @@ tegrazone.kr
 
 full:nvidia.custhelp.com
 full:nvidia.tt.omtrdc.net
+full:gfwsl.geforce.com @cn #判断下载地址
 
 # NVIDIA 文件下载服务器中国镜像
 full:cn.download.nvidia.com @cn
