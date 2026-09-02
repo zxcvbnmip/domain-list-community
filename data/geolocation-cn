@@ -1,6 +1,7 @@
 # List of all domains that have access point in China mainland
 
 include:category-porn @cn
+include:jetbrains @cn
 
 # 1password
 include:agilebits
