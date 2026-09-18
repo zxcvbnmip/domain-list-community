@@ -149,7 +149,7 @@ include:category-orgs
 
 # Services & Softwares
 include:category-android-app-download
-include:category-antivirus
+include:category-antivirus @-cn
 include:category-browser-!cn
 include:category-consent-management
 include:category-enhance-gaming
@@ -282,7 +282,7 @@ imtintl.com # 沉浸式翻译 (国际版)
 include:category-dev
 
 # Tech companies
-include:category-companies
+include:category-companies @-cn
 
 # Torrent websites
 include:1337x
