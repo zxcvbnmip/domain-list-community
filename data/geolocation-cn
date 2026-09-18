@@ -6,6 +6,9 @@ include:jetbrains @cn
 # 1password
 include:agilebits
 
+# kaspersky
+include:kaspersky @cn
+
 # Automobiles
 include:category-automobile-cn
 # Blogs
