@@ -4,6 +4,9 @@ include:doubao
 include:trae # MarsCode
 include:xiaomi-ai
 
+# opencode
+opencode.ai
+
 # LibLibAI
 liblib.art
 liblib.cloud
