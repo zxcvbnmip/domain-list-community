@@ -1,0 +1,4 @@
+payload:
+    - DOMAIN-SUFFIX,manwajs.vip
+    - DOMAIN-SUFFIX,manwarp.cc
+    - DOMAIN-REGEX,(^|\.)newmwtuyuan[0-9]+\.cc$
